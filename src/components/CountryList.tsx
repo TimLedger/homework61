@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-interface Country {
-  alpha3Code: string;
-  name: string;
-}
-
 interface Props {
-  onSelectCountry: (country: Country) => void;
+  onSelectCountry: (country: { alpha3Code: string; name: string }) => void;
 }
 
 const CountryList: React.FC<Props> = ({ onSelectCountry }) => {
-  const [countries, setCountries] = useState<Country[]>([]);
+  const [countries, setCountries] = useState<{ alpha3Code: string; name: string }[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Country[]>('https://restcountries.com/v2/all?fields=alpha3Code,name');
+        const response = await axios.get<{ alpha3Code: string; name: string }[]>('https://restcountries.com/v2/all?fields=alpha3Code,name');
         setCountries(response.data);
       } catch (error) {
         console.error('Error fetching countries:', error);
@@ -26,7 +21,7 @@ const CountryList: React.FC<Props> = ({ onSelectCountry }) => {
     fetchData();
   }, []);
 
-  const handleCountrySelect = async (country: Country) => {
+  const handleCountrySelect = async (country: { alpha3Code: string; name: string }) => {
     onSelectCountry(country);
   };
 
