@@ -8,6 +8,9 @@ interface CountryData {
   region: string;
   capital: string;
   borders: string[];
+  flags: {
+    svg: string;
+  };
 }
 
 interface Country {
@@ -17,6 +20,16 @@ interface Country {
 interface Props {
   countryCode: string | null;
 }
+
+const formatPopulation = (population: number): string => {
+    if (population < 1000000) {
+      return population.toString();
+    } else {
+      const millions = Math.round(population / 1000000);
+      return millions + " млн человек";
+    }
+};
+  
 
 const CountryInfo: React.FC<Props> = ({ countryCode }) => {
   const [countryData, setCountryData] = useState<CountryData | null>(null);
@@ -52,21 +65,26 @@ const CountryInfo: React.FC<Props> = ({ countryCode }) => {
     <div>
       {countryData ? (
         <div>
-          <Typography variant="h4">{countryData.name}</Typography>
-          <Typography variant="body1">Население: {countryData.population}</Typography>
-          <Typography variant="body1">Регион: {countryData.region}</Typography>
-          <Typography variant="body1">Столица: {countryData.capital}</Typography>
-          <Typography variant="body1">Граничит с:</Typography>
+          <Typography variant="h4" className='title'>{countryData.name}</Typography>
+          <div className='country'>
+            <div>
+                <Typography variant="body1">Столица: {countryData.capital}</Typography>
+                <Typography variant="body1">Население: {formatPopulation(countryData.population)}</Typography>
+                <Typography variant="body1">Регион: {countryData.region}</Typography>
+                <Typography variant="body1">Граничит с:</Typography>
+            </div>
+            <img src={countryData.flags.svg} alt={countryData.name} style={{ width: '200px', height: 'auto' }} />
+          </div>
           <List>
             {borderCountries.map((country, index) => (
-              <ListItem key={index}>
+              <ListItem key={index} className='country-list'>
                 <ListItemText primary={country.name} />
               </ListItem>
             ))}
           </List>
         </div>
       ) : (
-        <Typography>Выберите страну</Typography>
+        <Typography>Страна не выбрана</Typography>
       )}
     </div>
   );

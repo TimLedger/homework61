@@ -33,7 +33,7 @@ const CountryList: React.FC<Props> = ({ onSelectCountry }) => {
 
   return (
     <div>
-      <Typography variant="h4">Выберите страну</Typography>
+      <Typography variant="h4" className='title'>Страна:</Typography>
       <List>
         {countries.map((country) => (
           <ListItem key={country.alpha3Code} button onClick={() => handleCountrySelect(country)}>

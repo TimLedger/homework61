@@ -16,9 +16,17 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      <CountryList onSelectCountry={handleCountrySelect} />
-      <CountryInfo countryCode={selectedCountryCode} />
+    <div className="container">
+      <div className="sidebar">
+        <div className="sidebar-content">
+          <CountryList onSelectCountry={handleCountrySelect} />
+        </div>
+      </div>
+      <div className="country-info">
+        <div className="country-info-card">
+          <CountryInfo countryCode={selectedCountryCode} />
+        </div>
+      </div>
     </div>
   );
 };

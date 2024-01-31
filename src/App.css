@@ -5,3 +5,64 @@
   text-align: center;
 }
 
+.container {
+  display: flex;
+  gap: 25px;
+  height: 90vh;
+}
+
+.sidebar {
+  flex: 0 0 auto;
+  width: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.sidebar-content {
+  height: 100%;
+}
+
+.title{
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.country-info {
+  flex: 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.country-info-card {
+  height: 100%;
+}
+
+.country{
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  padding: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 5px 0;
+  border-radius: 4px ;
+}
