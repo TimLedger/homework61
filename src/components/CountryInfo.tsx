@@ -71,11 +71,11 @@ const CountryInfo: React.FC<Props> = ({ countryCode }) => {
                 <Typography variant="body1">Столица: {countryData.capital}</Typography>
                 <Typography variant="body1">Население: {formatPopulation(countryData.population)}</Typography>
                 <Typography variant="body1">Регион: {countryData.region}</Typography>
-                <Typography variant="body1">Граничит с:</Typography>
             </div>
             <img src={countryData.flags.svg} alt={countryData.name} style={{ width: '200px', height: 'auto' }} />
           </div>
           <List>
+          <Typography variant="h5">Граничит с:</Typography>
             {borderCountries.map((country, index) => (
               <ListItem key={index} className='country-list'>
                 <ListItemText primary={country.name} />
