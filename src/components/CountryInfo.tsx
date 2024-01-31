@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Typography, List, ListItem, ListItemText } from '@mui/material';
 
 interface CountryData {
   name: string;
@@ -9,18 +10,31 @@ interface CountryData {
   borders: string[];
 }
 
+interface Country {
+  name: string;
+}
+
 interface Props {
   countryCode: string | null;
 }
 
 const CountryInfo: React.FC<Props> = ({ countryCode }) => {
   const [countryData, setCountryData] = useState<CountryData | null>(null);
+  const [borderCountries, setBorderCountries] = useState<Country[]>([]);
 
   useEffect(() => {
     const fetchCountryData = async () => {
       try {
         const response = await axios.get<CountryData>(`https://restcountries.com/v2/alpha/${countryCode}`);
         setCountryData(response.data);
+        
+        const borderNames = await Promise.all(
+          response.data.borders.map(async (borderCode) => {
+            const borderResponse = await axios.get<Country>(`https://restcountries.com/v2/alpha/${borderCode}`);
+            return borderResponse.data;
+          })
+        );
+        setBorderCountries(borderNames);
       } catch (error) {
         console.error('Error fetching country data:', error);
       }
@@ -30,6 +44,7 @@ const CountryInfo: React.FC<Props> = ({ countryCode }) => {
       fetchCountryData();
     } else {
       setCountryData(null);
+      setBorderCountries([]);
     }
   }, [countryCode]);
 
@@ -37,14 +52,21 @@ const CountryInfo: React.FC<Props> = ({ countryCode }) => {
     <div>
       {countryData ? (
         <div>
-          <h2>{countryData.name}</h2>
-          <p>Население: {countryData.population}</p>
-          <p>Регион: {countryData.region}</p>
-          <p>Столица: {countryData.capital}</p>
-          <p>Граничит с: {countryData.borders.join(', ')}</p>
+          <Typography variant="h4">{countryData.name}</Typography>
+          <Typography variant="body1">Население: {countryData.population}</Typography>
+          <Typography variant="body1">Регион: {countryData.region}</Typography>
+          <Typography variant="body1">Столица: {countryData.capital}</Typography>
+          <Typography variant="body1">Граничит с:</Typography>
+          <List>
+            {borderCountries.map((country, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={country.name} />
+              </ListItem>
+            ))}
+          </List>
         </div>
       ) : (
-        <p>Выберите страну</p>
+        <Typography>Выберите страну</Typography>
       )}
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CountryList from './components/CountryList';
 import CountryInfo from './components/CountryInfo';
+import './App.css';
 
 interface Country {
   alpha3Code: string;

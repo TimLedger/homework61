@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { List, ListItem, ListItemText, Typography } from '@mui/material';
+
+interface Country {
+  alpha3Code: string;
+  name: string;
+}
 
 interface Props {
-  onSelectCountry: (country: { alpha3Code: string; name: string }) => void;
+  onSelectCountry: (country: Country) => void;
 }
 
 const CountryList: React.FC<Props> = ({ onSelectCountry }) => {
-  const [countries, setCountries] = useState<{ alpha3Code: string; name: string }[]>([]);
+  const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<{ alpha3Code: string; name: string }[]>('https://restcountries.com/v2/all?fields=alpha3Code,name');
+        const response = await axios.get<Country[]>('https://restcountries.com/v2/all?fields=alpha3Code,name');
         setCountries(response.data);
       } catch (error) {
         console.error('Error fetching countries:', error);
@@ -21,20 +27,20 @@ const CountryList: React.FC<Props> = ({ onSelectCountry }) => {
     fetchData();
   }, []);
 
-  const handleCountrySelect = async (country: { alpha3Code: string; name: string }) => {
+  const handleCountrySelect = async (country: Country) => {
     onSelectCountry(country);
   };
 
   return (
     <div>
-      <h2>Выберите страну</h2>
-      <ul>
+      <Typography variant="h4">Выберите страну</Typography>
+      <List>
         {countries.map((country) => (
-          <li key={country.alpha3Code} onClick={() => handleCountrySelect(country)}>
-            {country.name}
-          </li>
+          <ListItem key={country.alpha3Code} button onClick={() => handleCountrySelect(country)}>
+            <ListItemText primary={country.name} />
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </div>
   );
 };
